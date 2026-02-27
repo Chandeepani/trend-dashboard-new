@@ -9,7 +9,7 @@ import seaborn as sns
 st.set_page_config(page_title="Trend Analysis Dashboard", layout="wide")
 
 st.title("📊 Interactive Trend Analysis & Forecasting Dashboard")
-st.markdown("Final Year Project - Time Series Forecasting with Machine Learning & User Input System")
+
 
 # ================= LOAD DATA =================
 @st.cache_data
