@@ -8,7 +8,7 @@ import seaborn as sns
 # ================= PAGE CONFIG =================
 st.set_page_config(page_title="Trend Analysis Dashboard", layout="wide")
 
-st.title("📊 Interactive Trend Analysis & Forecasting Dashboard")
+st.title(" Interactive Trend Analysis & Forecasting Dashboard")
 
 
 # ================= LOAD DATA =================
@@ -29,13 +29,13 @@ df = load_data()
 model, features = load_model()
 
 # ================= SIDEBAR =================
-st.sidebar.header("🔍 Dashboard Controls")
+st.sidebar.header(" Dashboard Controls")
 industry = st.sidebar.selectbox("Select Industry", df["Industry"].unique())
 
 filtered_df = df[df["Industry"] == industry].sort_values("Month")
 
 # ================= KPI SECTION =================
-st.subheader(f"📌 Key Performance Indicators - {industry}")
+st.subheader(f" Key Performance Indicators - {industry}")
 col1, col2, col3, col4 = st.columns(4)
 
 col1.metric("Total Revenue", f"${filtered_df['Revenue'].sum():,.0f}")
@@ -44,33 +44,26 @@ col3.metric("Total Orders", f"{int(filtered_df['Orders'].sum()):,}")
 col4.metric("Total Profit", f"${filtered_df['Profit'].sum():,.0f}")
 
 # ================= TREND CHART =================
-st.subheader("📈 Monthly Revenue Trend")
+st.subheader(" Monthly Revenue Trend")
 fig1, ax1 = plt.subplots(figsize=(10,5))
 sns.lineplot(data=filtered_df, x="Month", y="Revenue", marker="o", ax=ax1)
 plt.xticks(rotation=45)
 st.pyplot(fig1)
 
 # ================= INDUSTRY COMPARISON =================
-st.subheader("🏭 Industry Comparison")
+st.subheader(" Industry Comparison")
 fig2, ax2 = plt.subplots(figsize=(12,6))
 sns.lineplot(data=df, x="Month", y="Revenue", hue="Industry", ax=ax2)
 plt.xticks(rotation=45)
 st.pyplot(fig2)
 
-# ================= CORRELATION =================
-st.subheader("🔥 Correlation Heatmap")
-fig3, ax3 = plt.subplots()
-sns.heatmap(
-    filtered_df[['Revenue','Customers','Orders','Profit']].corr(),
-    annot=True, cmap="coolwarm", ax=ax3
-)
-st.pyplot(fig3)
+
 
 # =========================================================
-# 🧠 REAL USER INPUT SECTION (MOST IMPORTANT - INTERACTIVE)
+#  REAL USER INPUT SECTION (MOST IMPORTANT - INTERACTIVE)
 # =========================================================
 st.markdown("---")
-st.header("🧮 Real-Time Revenue Prediction (User Input)")
+st.header(" Real-Time Revenue Prediction (User Input)")
 
 st.markdown("""
 Enter your real business data for the current month.  
@@ -84,14 +77,14 @@ col1, col2 = st.columns(2)
 
 with col1:
     customers_input = st.number_input(
-        "👥 Number of Customers",
+        " Number of Customers",
         min_value=0,
         value=int(latest_row["Customers"]),
         help="Enter expected customers for current month"
     )
 
     orders_input = st.number_input(
-        "📦 Number of Orders",
+        " Number of Orders",
         min_value=0,
         value=int(latest_row["Orders"]),
         help="Enter expected orders"
@@ -99,21 +92,21 @@ with col1:
 
 with col2:
     profit_input = st.number_input(
-        "💰 Profit ($)",
+        " Profit ($)",
         min_value=0.0,
         value=float(latest_row["Profit"]),
         help="Enter estimated profit"
     )
 
     revenue_input = st.number_input(
-        "💵 Current Month Revenue ($)",
+        " Current Month Revenue ($)",
         min_value=0.0,
         value=float(latest_row["Revenue"]),
         help="Used as lag feature for time-series prediction"
     )
 
 # Predict Button
-if st.button("🔮 Predict Next Month Revenue", use_container_width=True):
+if st.button(" Predict Next Month Revenue", use_container_width=True):
 
     try:
         # Create input dictionary based on trained features
@@ -136,20 +129,20 @@ if st.button("🔮 Predict Next Month Revenue", use_container_width=True):
         prediction = model.predict(input_df)[0]
 
         # ================= OUTPUT DISPLAY =================
-        st.success(f"📈 Predicted Next Month Revenue: ${prediction:,.2f}")
+        st.success(f" Predicted Next Month Revenue: ${prediction:,.2f}")
 
         # Business Insight Logic (VERY GOOD FOR VIVA)
         historical_avg = filtered_df["Revenue"].mean()
 
         if prediction > historical_avg:
-            st.info("📊 Insight: Expected growth compared to historical average.")
+            st.info(" Insight: Expected growth compared to historical average.")
         elif prediction < historical_avg:
-            st.warning("📉 Insight: Possible decline in revenue trend.")
+            st.warning(" Insight: Possible decline in revenue trend.")
         else:
-            st.info("📊 Insight: Stable revenue trend expected.")
+            st.info(" Insight: Stable revenue trend expected.")
 
         # Comparison Chart
-        st.subheader("📊 Prediction vs Historical Average")
+        st.subheader(" Prediction vs Historical Average")
         compare_df = pd.DataFrame({
             "Category": ["Historical Average", "Predicted Revenue"],
             "Revenue": [historical_avg, prediction]
@@ -166,7 +159,7 @@ if st.button("🔮 Predict Next Month Revenue", use_container_width=True):
 # 🔮 AUTOMATIC 6-MONTH FORECAST
 # =========================================================
 st.markdown("---")
-st.header("🔮 6-Month Automatic Revenue Forecast")
+st.header(" 6-Month Automatic Revenue Forecast")
 
 industry_df = filtered_df.copy()
 
